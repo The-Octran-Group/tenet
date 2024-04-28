@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import tech.octran.tenet.components.Info;
+import tech.octran.tenet.data.Info;
 
 public class Code extends JPanel {
 

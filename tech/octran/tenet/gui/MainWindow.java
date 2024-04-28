@@ -12,23 +12,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import tech.octran.tenet.components.Info;
+import tech.octran.tenet.data.Info;
 
 public class MainWindow {
 
-    private JFrame frame;
-    private JPanel actionPanel;
+    private final JFrame frame;
 
-    private int currentAction;
+    private int currentAction; // current tab opened
 
-    private JPanel fileActionPanel;
-    private JLabel fileActionLabel;
+    private  final JPanel fileActionPanel;
+    private  final JLabel fileActionLabel;
 
-    private JPanel settingsActionPanel;
-    private JLabel settingsActionLabel;
-
-    private JPanel workingPanel;
-    private JPanel filesPanel;
+    private  final JPanel settingsActionPanel;
+    private  final JLabel settingsActionLabel;
 
     // constructor
     public MainWindow() {
@@ -50,7 +46,7 @@ public class MainWindow {
         frame.setMinimumSize(new Dimension(1000, 600));
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
-        actionPanel = new JPanel();
+        JPanel actionPanel = new JPanel();
         actionPanel.setPreferredSize(new Dimension(50, frame.getHeight()));
         actionPanel.setBackground(Info.getThemeColor(Info.THEME));
         actionPanel.setBorder(null);
@@ -113,13 +109,13 @@ public class MainWindow {
         settingsActionLabel.setIcon(Info.getImage("public\\settings.png", 26, 26));
         settingsActionPanel.add(settingsActionLabel);
 
-        workingPanel = new JPanel();
+        JPanel workingPanel = new JPanel();
         workingPanel.setPreferredSize(new Dimension(frame.getWidth() - actionPanel.getWidth(), frame.getHeight()));
         workingPanel.setBackground(Info.getThemeColor(Info.THEME_PLUS));
         workingPanel.setLayout(new BorderLayout());
         frame.getContentPane().add(workingPanel, BorderLayout.CENTER);
 
-        filesPanel = new JPanel();
+        JPanel filesPanel = new JPanel();
         filesPanel.setPreferredSize(new Dimension(workingPanel.getWidth(), workingPanel.getHeight()));
         filesPanel.setBackground(Info.getThemeColor(Info.THEME));
         workingPanel.add(filesPanel, BorderLayout.CENTER);

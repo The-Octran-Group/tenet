@@ -1,14 +1,15 @@
 package tech.octran.tenet.gui;
 
-import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import javax.swing.*;
 
-import tech.octran.tenet.components.Info;
+import tech.octran.tenet.data.Info;
 
 public class Splash {
+
+    private static final int WINDOW_WIDTH = 500;
+    private static final int WINDOW_HEIGHT = 300;
+    private static final int LOADING_BAR_HEIGHT = 10;
 
     private JWindow window;
     private JPanel loadingBar;
@@ -23,7 +24,7 @@ public class Splash {
         window.setBounds(0, 0, 500, 300);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
-        window.setAlwaysOnTop(false);
+        window.setAlwaysOnTop(true);
 
         window.getContentPane().setBackground(Info.getThemeColor(Info.THEME));
 
@@ -32,7 +33,7 @@ public class Splash {
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         logoLabel.setForeground(Info.getThemeColor(Info.FONT_PRIORITY));
         logoLabel.setIcon(Info.getImage("public\\logo.png", 125, 125));
-        logoLabel.setBounds((window.getWidth()-125)/2, 50, 125, 125);
+        logoLabel.setBounds((window.getWidth() - 125) / 2, 50, 125, 125);
         window.getContentPane().add(logoLabel, SwingConstants.CENTER);
 
         JLabel affiliateLabel = new JLabel();
@@ -43,14 +44,14 @@ public class Splash {
             affiliateLabel.setIcon(Info.getImage("public\\dev.png", 60, 30));
         else if (Info.getFullVersion().contains("BETA"))
             affiliateLabel.setIcon(Info.getImage("public\\beta.png", 60, 30));
-        affiliateLabel.setBounds(window.getWidth()-80, 20, 60, 30);
+        affiliateLabel.setBounds(window.getWidth() - 80, 20, 60, 30);
         window.getContentPane().add(affiliateLabel, SwingConstants.CENTER);
 
         JLabel versionLabel = new JLabel(Info.getFullVersion());
         versionLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
         versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         versionLabel.setForeground(Info.getThemeColor(Info.FONT));
-        versionLabel.setBounds((window.getWidth()/2) - 200, 185, 400, 20);
+        versionLabel.setBounds((window.getWidth() / 2) - 200, 185, 400, 20);
 
         processLabel = new JLabel("");
         processLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
@@ -59,9 +60,15 @@ public class Splash {
         processLabel.setForeground(Info.getThemeColor(Info.FONT));
         processLabel.setBounds(5, 270, 490, 20);
 
-        loadingBar = new JPanel();
-        loadingBar.setBackground(Info.getThemeColor(Info.FONT));
-        loadingBar.setBounds(0, 290, 15, 10);
+        loadingBar = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Info.getThemeColor(Info.FONT));
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        loadingBar.setBounds(0, WINDOW_HEIGHT - LOADING_BAR_HEIGHT, 15, LOADING_BAR_HEIGHT);
 
         window.setVisible(true);
 
@@ -79,9 +86,10 @@ public class Splash {
         window.repaint();
     }
 
-    public void setProcess(String process, int x) {
+    public void setProcess(String process, int percentage) {
         processLabel.setText(process);
-        loadingBar.setBounds(0, 290, (int)((double)(x/100.0)*500), 10);
+        loadingBar.setBounds(0, WINDOW_HEIGHT - LOADING_BAR_HEIGHT, (int) ((double) (percentage / 100.0) * WINDOW_WIDTH), LOADING_BAR_HEIGHT);
+        loadingBar.repaint();
     }
 
     public void holdup(int x) {
@@ -93,7 +101,10 @@ public class Splash {
     }
 
     public void stop() {
-        window.setVisible(false);
+        SwingUtilities.invokeLater(() -> {
+            window.setVisible(false);
+            window.dispose();
+        });
     }
 
 }
